@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Global Background ONLY (no forced text color) */
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at 20% 30%, #1e40af 0%, transparent 40%),
+              radial-gradient(circle at 80% 70%, #7c3aed 0%, transparent 40%),
+              #0f172a;
+}
+
+/* Glass utility */
+.glass {
+  @apply bg-white/10 backdrop-blur-2xl border border-white/20;
+}
+
+/* Glow hover effect */
+.glow-hover {
+  @apply transition-all duration-500 hover:scale-105 hover:shadow-[0_0_40px_rgba(59,130,246,0.5)];
+}
+
+/* Modern button */
+.modern-btn {
+  @apply relative overflow-hidden px-6 py-3 rounded-xl font-semibold 
+  bg-gradient-to-r from-blue-600 to-purple-600 
+  hover:from-purple-600 hover:to-blue-600 
+  transition-all duration-500 shadow-lg hover:shadow-blue-500/40;
+}

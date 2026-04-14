@@ -6,6 +6,8 @@ import { Loader2, AlertCircle, CheckCircle } from "lucide-react";
 export default function Register() {
   const navigate = useNavigate();
 
+  const BASE_URL = "https://meddonate.onrender.com"; // ✅ FIX
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -20,7 +22,6 @@ export default function Register() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
-  // ✅ Prevent access if already logged in
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) navigate("/dashboard");
@@ -51,7 +52,7 @@ export default function Register() {
     setSuccess(null);
 
     try {
-      await axios.post("http://localhost:5000/api/auth/register", {
+      await axios.post(`${BASE_URL}/api/auth/register`, {
         name: form.name,
         email: form.email,
         password: form.password,
@@ -72,170 +73,81 @@ export default function Register() {
     setLoading(false);
   };
 
-  // ✅ Google Signup (Backend OAuth)
+  // ✅ Google Signup FIX
   const handleGoogleSignup = () => {
     setGoogleLoading(true);
-    window.location.href = "http://localhost:5000/api/auth/google";
+    window.location.href = `${BASE_URL}/api/auth/google`;
   };
 
   return (
-    <div className="min-h-screen grid md:grid-cols-2">
+    <div className="grid min-h-screen md:grid-cols-2">
 
-      {/* LEFT SIDE */}
-      <div className="hidden md:flex bg-gradient-to-br from-blue-600 to-purple-700 text-white flex-col justify-center items-center p-12">
-        <h1 className="text-5xl font-extrabold mb-6 tracking-wide">
-          Join MedDonate
-        </h1>
-        <p className="text-blue-100 text-center max-w-md">
-          Help reduce medicine waste and make healthcare accessible
-          to those who need it most.
+      {/* LEFT */}
+      <div className="flex-col items-center justify-center hidden p-12 text-white md:flex bg-gradient-to-br from-blue-600 to-purple-700">
+        <h1 className="mb-6 text-5xl font-extrabold">Join MedDonate</h1>
+        <p className="max-w-md text-center text-blue-100">
+          Help reduce medicine waste and make healthcare accessible.
         </p>
       </div>
 
-      {/* RIGHT SIDE */}
-      <div className="flex items-center justify-center bg-gray-100 px-6">
-        <div className="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-md">
+      {/* RIGHT */}
+      <div className="flex items-center justify-center px-6 bg-gray-100">
+        <div className="w-full max-w-md p-10 bg-white shadow-2xl rounded-2xl">
 
-          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+          <h2 className="mb-8 text-3xl font-bold text-center text-gray-800">
             Create Account
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
 
-            <input
-              type="text"
-              name="name"
-              placeholder="Full Name"
-              required
-              value={form.name}
+            <input name="name" placeholder="Full Name" required value={form.name}
               onChange={handleChange}
-              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-            />
+              className="w-full p-3 border rounded-lg" />
 
-            <input
-              type="email"
-              name="email"
-              placeholder="Email address"
-              required
-              value={form.email}
-              onChange={handleChange}
-              autoComplete="email"
-              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-            />
+            <input name="email" type="email" placeholder="Email" required
+              value={form.email} onChange={handleChange}
+              className="w-full p-3 border rounded-lg" />
 
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              required
-              value={form.password}
-              onChange={handleChange}
-              autoComplete="new-password"
-              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-            />
+            <input name="password" type="password" placeholder="Password" required
+              value={form.password} onChange={handleChange}
+              className="w-full p-3 border rounded-lg" />
 
-            <input
-              type="password"
-              name="confirmPassword"
-              placeholder="Confirm Password"
-              required
-              value={form.confirmPassword}
-              onChange={handleChange}
-              autoComplete="new-password"
-              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-            />
+            <input name="confirmPassword" type="password" placeholder="Confirm Password" required
+              value={form.confirmPassword} onChange={handleChange}
+              className="w-full p-3 border rounded-lg" />
 
-            <input
-              type="text"
-              name="location"
-              placeholder="City"
-              required
-              value={form.location}
-              onChange={handleChange}
-              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-            />
+            <input name="location" placeholder="City" required
+              value={form.location} onChange={handleChange}
+              className="w-full p-3 border rounded-lg" />
 
-            <select
-              name="role"
-              value={form.role}
-              onChange={handleChange}
-              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-            >
+            <select name="role" value={form.role} onChange={handleChange}
+              className="w-full p-3 border rounded-lg">
               <option value="donor">Donor</option>
               <option value="receiver">Receiver</option>
             </select>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full flex justify-center items-center gap-2 bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-60"
-            >
-              {loading ? (
-                <>
-                  <Loader2 size={18} className="animate-spin" />
-                  Registering...
-                </>
-              ) : (
-                "Register"
-              )}
+            <button type="submit" disabled={loading}
+              className="w-full p-3 text-white bg-blue-600 rounded-lg">
+              {loading ? "Registering..." : "Register"}
             </button>
           </form>
 
-          {/* OR Divider */}
           <div className="flex items-center my-6">
             <div className="flex-grow h-px bg-gray-300"></div>
             <span className="px-3 text-sm text-gray-500">OR</span>
             <div className="flex-grow h-px bg-gray-300"></div>
           </div>
 
-          {/* Google Button */}
-          <button
-            type="button"
-            onClick={handleGoogleSignup}
-            disabled={googleLoading}
-            className="w-full flex items-center justify-center gap-3 border border-gray-300 bg-white text-gray-700 p-3 rounded-lg font-medium hover:bg-gray-100 transition disabled:opacity-60"
-          >
-            {googleLoading ? (
-              <>
-                <Loader2 size={18} className="animate-spin" />
-                Redirecting...
-              </>
-            ) : (
-              <>
-                <img
-                  src="https://www.svgrepo.com/show/475656/google-color.svg"
-                  alt="Google"
-                  className="w-5 h-5"
-                />
-                Continue with Google
-              </>
-            )}
+          <button onClick={handleGoogleSignup}
+            className="w-full p-3 border rounded-lg">
+            Continue with Google
           </button>
 
-          {/* Error */}
-          {error && (
-            <div className="mt-4 flex items-center gap-2 bg-red-100 border border-red-300 text-red-600 p-3 rounded-lg">
-              <AlertCircle size={18} />
-              <span className="text-sm">{error}</span>
-            </div>
-          )}
+          {error && <p className="mt-3 text-red-500">{error}</p>}
+          {success && <p className="mt-3 text-green-500">{success}</p>}
 
-          {/* Success */}
-          {success && (
-            <div className="mt-4 flex items-center gap-2 bg-green-100 border border-green-300 text-green-600 p-3 rounded-lg">
-              <CheckCircle size={18} />
-              <span className="text-sm">{success}</span>
-            </div>
-          )}
-
-          <p className="mt-6 text-center text-sm text-gray-600">
-            Already have an account?{" "}
-            <Link
-              to="/login"
-              className="text-blue-600 font-semibold hover:underline"
-            >
-              Login here
-            </Link>
+          <p className="mt-6 text-sm text-center">
+            Already have an account? <Link to="/login">Login</Link>
           </p>
 
         </div>

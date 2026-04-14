@@ -13,6 +13,9 @@ function Dashboard() {
 
   const [loading, setLoading] = useState(false);
 
+  // ✅ BASE URL (production)
+  const BASE_URL = "https://meddonate.onrender.com";
+
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -49,7 +52,7 @@ function Dashboard() {
       async (pos) => {
         try {
           await axios.post(
-            "http://localhost:5000/api/medicines",
+            `${BASE_URL}/api/medicines`,
             {
               ...formData,
               location: {
@@ -82,7 +85,7 @@ function Dashboard() {
           setLoading(false);
         }
       },
-      (error) => {
+      () => {
         alert("Please allow location access.");
         setLoading(false);
       },
@@ -99,7 +102,7 @@ function Dashboard() {
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="max-w-4xl mx-auto py-20 space-y-10"
+      className="max-w-4xl py-20 mx-auto space-y-10"
     >
       <h1 className="text-4xl font-bold text-center">
         Donate Medicine
@@ -111,7 +114,7 @@ function Dashboard() {
       {/* FORM */}
       <form
         onSubmit={handleSubmit}
-        className="glass glow-hover rounded-3xl p-10 space-y-6"
+        className="p-10 space-y-6 glass glow-hover rounded-3xl"
       >
         <input
           name="name"
@@ -119,7 +122,7 @@ function Dashboard() {
           required
           value={formData.name}
           onChange={handleChange}
-          className="w-full p-4 rounded-xl bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500"
+          className="w-full p-4 border rounded-xl bg-white/10 border-white/20 focus:ring-2 focus:ring-blue-500"
         />
 
         <input
@@ -129,7 +132,7 @@ function Dashboard() {
           required
           value={formData.quantity}
           onChange={handleChange}
-          className="w-full p-4 rounded-xl bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500"
+          className="w-full p-4 border rounded-xl bg-white/10 border-white/20 focus:ring-2 focus:ring-blue-500"
         />
 
         <input
@@ -138,7 +141,7 @@ function Dashboard() {
           required
           value={formData.expiryDate}
           onChange={handleChange}
-          className="w-full p-4 rounded-xl bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500"
+          className="w-full p-4 border rounded-xl bg-white/10 border-white/20 focus:ring-2 focus:ring-blue-500"
         />
 
         <textarea
@@ -146,13 +149,13 @@ function Dashboard() {
           placeholder="Description"
           value={formData.description}
           onChange={handleChange}
-          className="w-full p-4 rounded-xl bg-white/10 border border-white/20 focus:ring-2 focus:ring-blue-500"
+          className="w-full p-4 border rounded-xl bg-white/10 border-white/20 focus:ring-2 focus:ring-blue-500"
         />
 
         <button
           type="submit"
           disabled={loading}
-          className="modern-btn w-full"
+          className="w-full modern-btn"
         >
           {loading ? "Donating..." : "Donate Medicine"}
         </button>

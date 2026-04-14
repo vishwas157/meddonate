@@ -7,6 +7,9 @@ function Home() {
   const [urgentReqs, setUrgentReqs] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // ✅ BASE URL (production)
+  const BASE_URL = "https://meddonate.onrender.com";
+
   const faqs = [
     {
       question: "Is medicine sharing legal?",
@@ -34,7 +37,7 @@ function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/medicines");
+        const res = await axios.get(`${BASE_URL}/api/medicines`);
 
         const meds = Array.isArray(res.data)
           ? res.data
@@ -171,7 +174,7 @@ function Home() {
         )}
       </section>
 
-      {/* 🚨 URGENT REQUIREMENTS */}
+      {/* URGENT REQUIREMENTS */}
       <section className="px-10 py-24 bg-black/30">
         <h2 className="mb-12 text-4xl font-bold text-center text-red-400">
           Urgently Required Medicines

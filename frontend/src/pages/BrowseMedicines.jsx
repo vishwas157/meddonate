@@ -16,12 +16,13 @@ function BrowseMedicines() {
 
   const { location, calculateDistance } = useLocation();
 
+  // ✅ BASE URL (production)
+  const BASE_URL = "https://meddonate.onrender.com";
+
   // ================= FETCH MEDICINES =================
   const fetchMedicines = async () => {
     try {
-      const { data } = await axios.get(
-        "http://localhost:5000/api/medicines"
-      );
+      const { data } = await axios.get(`${BASE_URL}/api/medicines`);
 
       let meds = data.medicines;
 
@@ -70,7 +71,7 @@ function BrowseMedicines() {
 
     try {
       await axios.put(
-        `http://localhost:5000/api/medicines/${id}/claim`,
+        `${BASE_URL}/api/medicines/${id}/claim`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -123,14 +124,12 @@ function BrowseMedicines() {
   return (
     <div className="max-w-6xl py-10 mx-auto text-white">
 
-      {/* 🔥 TOGGLE */}
+      {/* TOGGLE */}
       <div className="flex gap-4 mb-8">
         <button
           onClick={() => setView("medicines")}
           className={`px-5 py-2 rounded-lg ${
-            view === "medicines"
-              ? "bg-blue-600"
-              : "bg-gray-700"
+            view === "medicines" ? "bg-blue-600" : "bg-gray-700"
           }`}
         >
           Medicines
@@ -139,16 +138,14 @@ function BrowseMedicines() {
         <button
           onClick={() => setView("requirements")}
           className={`px-5 py-2 rounded-lg ${
-            view === "requirements"
-              ? "bg-purple-600"
-              : "bg-gray-700"
+            view === "requirements" ? "bg-purple-600" : "bg-gray-700"
           }`}
         >
           Requirements
         </button>
       </div>
 
-      {/* ================= MEDICINES ================= */}
+      {/* MEDICINES */}
       {view === "medicines" && (
         <div className="grid gap-6 md:grid-cols-3">
           {medicines.map((med) => (
@@ -166,11 +163,11 @@ function BrowseMedicines() {
         </div>
       )}
 
-      {/* ================= REQUIREMENTS ================= */}
+      {/* REQUIREMENTS */}
       {view === "requirements" && (
         <div className="space-y-8">
 
-          {/* ADD FORM */}
+          {/* FORM */}
           <form
             onSubmit={handleSubmit}
             className="p-6 space-y-4 bg-gray-900 border border-gray-800 rounded-xl"

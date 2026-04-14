@@ -9,20 +9,25 @@ function Profile() {
 
   const token = localStorage.getItem("token");
 
+  // ✅ BASE URL
+  const BASE_URL = "https://meddonate.onrender.com";
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:5000/api/protected",
+          `${BASE_URL}/api/protected`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
+
         setUser(data.user);
       } catch (err) {
-        console.log(err);
+        console.log("Profile fetch error:", err);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchUser();
@@ -45,7 +50,6 @@ function Profile() {
 
         {/* SIDEBAR */}
         <div className="p-6 bg-gray-800 border border-gray-700 rounded-2xl">
-
           <div className="flex flex-col items-center mb-6">
             <div className="flex items-center justify-center w-16 h-16 text-xl font-bold bg-blue-600 rounded-full">
               {user.name.charAt(0).toUpperCase()}
@@ -97,13 +101,8 @@ function Profile() {
             </>
           )}
 
-          {/* ORDERS */}
           {activeTab === "orders" && <Orders />}
-
-          {/* ACTIVITY */}
           {activeTab === "activity" && <Activity />}
-
-          {/* INVOICES */}
           {activeTab === "invoices" && <Invoices />}
 
         </div>
@@ -115,7 +114,6 @@ function Profile() {
 export default Profile;
 
 
-
 // ================= SMALL CARD =================
 function Card({ title, value }) {
   return (
@@ -125,8 +123,6 @@ function Card({ title, value }) {
     </div>
   );
 }
-
-
 
 // ================= ORDERS =================
 function Orders() {
@@ -147,14 +143,11 @@ function Orders() {
         <div key={i} className="p-5 bg-gray-800 border border-gray-700 rounded-xl">
           <h3 className="font-semibold">{item.name}</h3>
           <p className="text-sm text-gray-400">Qty: {item.quantity}</p>
-          <p className="text-sm text-gray-400">Expiry: {item.expiry}</p>
         </div>
       ))}
     </div>
   );
 }
-
-
 
 // ================= ACTIVITY =================
 function Activity() {
@@ -174,8 +167,6 @@ function Activity() {
     </div>
   );
 }
-
-
 
 // ================= INVOICES =================
 function Invoices() {

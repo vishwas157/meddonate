@@ -10,7 +10,7 @@ function Admin() {
 
     try {
       const { data } = await axios.get(
-        "http://localhost:5000/api/stats",
+        "https://meddonate.onrender.com/api/stats",
         {
           headers: {
             Authorization: `Bearer ${token}`,

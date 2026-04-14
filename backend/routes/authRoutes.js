@@ -29,7 +29,7 @@ router.get(
     const { user, token } = req.user;
 
     res.redirect(
-      `http://localhost:5173/google-success?token=${token}&user=${encodeURIComponent(
+      `https://meddonate-two.vercel.app/google-success?token=${token}&user=${encodeURIComponent(
         JSON.stringify(user)
       )}`
     );

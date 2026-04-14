@@ -30,6 +30,7 @@ function Login() {
     }));
   };
 
+  // ✅ EMAIL LOGIN (FIXED)
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -37,14 +38,14 @@ function Login() {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "https://meddonate.onrender.com/api/auth/login",
         formData
       );
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      navigate("/profile"); // ✅ Redirect to profile
+      navigate("/profile");
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
     }
@@ -52,31 +53,36 @@ function Login() {
     setLoading(false);
   };
 
+  // ✅ GOOGLE LOGIN (CORRECT)
   const handleGoogleLogin = () => {
     setGoogleLoading(true);
-    window.location.href = "http://localhost:5000/api/auth/google";
+    window.location.href =
+      "https://meddonate.onrender.com/api/auth/google";
   };
 
   return (
-    <div className="min-h-screen grid md:grid-cols-2">
+    <div className="grid min-h-screen md:grid-cols-2">
 
-      <div className="hidden md:flex bg-gradient-to-br from-blue-600 to-purple-700 text-white flex-col justify-center items-center p-12">
-        <h1 className="text-5xl font-extrabold mb-6 tracking-wide">
+      {/* LEFT SIDE */}
+      <div className="flex-col items-center justify-center hidden p-12 text-white md:flex bg-gradient-to-br from-blue-600 to-purple-700">
+        <h1 className="mb-6 text-5xl font-extrabold tracking-wide">
           MedDonate
         </h1>
-        <p className="text-lg text-blue-100 max-w-md text-center">
+        <p className="max-w-md text-lg text-center text-blue-100">
           Reduce medicine waste. Help communities.
           Make healthcare accessible for everyone.
         </p>
       </div>
 
-      <div className="flex items-center justify-center bg-gray-100 px-6">
-        <div className="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-md">
+      {/* RIGHT SIDE */}
+      <div className="flex items-center justify-center px-6 bg-gray-100">
+        <div className="w-full max-w-md p-10 bg-white shadow-2xl rounded-2xl">
 
-          <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">
+          <h2 className="mb-8 text-3xl font-bold text-center text-gray-800">
             Welcome Back
           </h2>
 
+          {/* EMAIL LOGIN */}
           <form onSubmit={handleSubmit} className="space-y-5">
 
             <input
@@ -102,7 +108,7 @@ function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex justify-center items-center gap-2 bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-60"
+              className="flex items-center justify-center w-full gap-2 p-3 font-semibold text-white transition bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-60"
             >
               {loading ? (
                 <>
@@ -115,17 +121,19 @@ function Login() {
             </button>
           </form>
 
+          {/* DIVIDER */}
           <div className="flex items-center my-6">
             <div className="flex-grow h-px bg-gray-300"></div>
             <span className="px-3 text-sm text-gray-500">OR</span>
             <div className="flex-grow h-px bg-gray-300"></div>
           </div>
 
+          {/* GOOGLE LOGIN */}
           <button
             type="button"
             onClick={handleGoogleLogin}
             disabled={googleLoading}
-            className="w-full flex items-center justify-center gap-3 border border-gray-300 bg-white text-gray-700 p-3 rounded-lg font-medium hover:bg-gray-100 transition disabled:opacity-60"
+            className="flex items-center justify-center w-full gap-3 p-3 font-medium text-gray-700 transition bg-white border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-60"
           >
             {googleLoading ? (
               <>
@@ -144,16 +152,21 @@ function Login() {
             )}
           </button>
 
+          {/* ERROR */}
           {error && (
-            <div className="mt-5 flex items-center gap-2 bg-red-100 border border-red-300 text-red-600 p-3 rounded-lg">
+            <div className="flex items-center gap-2 p-3 mt-5 text-red-600 bg-red-100 border border-red-300 rounded-lg">
               <AlertCircle size={18} />
               <span className="text-sm">{error}</span>
             </div>
           )}
 
-          <p className="mt-6 text-center text-sm text-gray-600">
+          {/* REGISTER LINK */}
+          <p className="mt-6 text-sm text-center text-gray-600">
             Don’t have an account?{" "}
-            <Link to="/register" className="text-blue-600 font-semibold hover:underline">
+            <Link
+              to="/register"
+              className="font-semibold text-blue-600 hover:underline"
+            >
               Register here
             </Link>
           </p>
